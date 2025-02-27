@@ -1,10 +1,10 @@
 import { Routes } from '@angular/router';
-import { CarDetailComponent, CarListComponent } from './pages';
+import { VehicleListComponent, VehicleDetailComponent } from './pages';
 
 
 
 export const routes: Routes = [
   { path: '', redirectTo: '/cars', pathMatch: 'full' },
-  { path: 'cars', component: CarListComponent },
-  { path: 'cars/:id', component: CarDetailComponent }, // Dynamic route for car details
+  { path: 'cars', component: VehicleListComponent },
+  { path: 'cars/:id', component: VehicleDetailComponent }, // Dynamic route for car details
 ];

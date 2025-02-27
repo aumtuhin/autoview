@@ -1,0 +1,15 @@
+<h2>Vehicle List</h2>
+
+<!--Show loading spinner while fetching data -->
+<p-progressSpinner *ngIf="isLoading"></p-progressSpinner>
+
+<!--Show vehicle list once data is loaded -->
+<div *ngIf="!isLoading">
+  <button (click)="toggleSortOrder()">Sort {{ sortOrder === 'asc' ? 'Z-A' : 'A-Z' }}</button>
+
+  <ul>
+    <li *ngFor="let vehicle of vehicles">
+      {{ vehicle.name }} - {{ vehicle.manufacturer }} ({{ vehicle.model }})
+    </li>
+  </ul>
+</div>

@@ -1,2 +1,2 @@
-export { CarListComponent } from './car-list/car-list.component';
-export { CarDetailComponent } from './car-detail/car-detail.component';
+export { VehicleListComponent } from './vehicle-list/vehicle-list.component';
+export { VehicleDetailComponent } from './vehicle-detail/vehicle-detail.component';
