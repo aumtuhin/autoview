@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 import { MenuItem } from 'primeng/api';
 import { Menubar } from 'primeng/menubar';
 import { BadgeModule } from 'primeng/badge';
@@ -6,6 +6,7 @@ import { AvatarModule } from 'primeng/avatar';
 import { InputTextModule } from 'primeng/inputtext';
 import { CommonModule } from '@angular/common';
 import { ImageModule } from 'primeng/image';
+import { ButtonComponent } from '../button/button.component';
 
 @Component({
   standalone: true,
@@ -19,42 +20,14 @@ import { ImageModule } from 'primeng/image';
     InputTextModule,
     CommonModule,
     ImageModule,
-],
+    ButtonComponent,
+  ],
 })
 export class HeaderComponent implements OnInit {
-  items: MenuItem[] | undefined;
+  ngOnInit() {}
+  @Output() addVehicleClicked = new EventEmitter<void>();
 
-  ngOnInit() {
-    this.items = [
-      {
-        label: 'Home',
-        icon: 'pi pi-home',
-      },
-      {
-        label: 'Projects',
-        icon: 'pi pi-search',
-        badge: '3',
-        items: [
-          {
-            label: 'Core',
-            icon: 'pi pi-bolt',
-            shortcut: '⌘+S',
-          },
-          {
-            label: 'Blocks',
-            icon: 'pi pi-server',
-            shortcut: '⌘+B',
-          },
-          {
-            separator: true,
-          },
-          {
-            label: 'UI Kit',
-            icon: 'pi pi-pencil',
-            shortcut: '⌘+U',
-          },
-        ],
-      },
-    ];
+  openDialog() {
+    this.addVehicleClicked.emit(); // Notify parent component to open the dialog
   }
 }

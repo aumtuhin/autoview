@@ -5,7 +5,9 @@
 
 <!--Show vehicle list once data is loaded -->
 <div *ngIf="!isLoading">
-  <button (click)="toggleSortOrder()">Sort {{ sortOrder === 'asc' ? 'Z-A' : 'A-Z' }}</button>
+  <button (click)="toggleSortOrder()">
+    Sort {{ sortOrder === "asc" ? "Z-A" : "A-Z" }}
+  </button>
 
   <ul>
     <li *ngFor="let vehicle of vehicles">
@@ -13,3 +15,46 @@
     </li>
   </ul>
 </div>
+
+<!-- PrimeNG Dialog for Adding a Vehicle -->
+<p-dialog
+  [(visible)]="displayDialog"
+  header="Add Vehicle"
+  [modal]="true"
+  [closable]="false"
+>
+  <div class="p-fluid">
+    <label for="name">Name</label>
+    <input pInputText id="name" [(ngModel)]="newVehicle.name" required />
+
+    <label for="manufacturer">Manufacturer</label>
+    <input
+      pInputText
+      id="manufacturer"
+      [(ngModel)]="newVehicle.manufacturer"
+      required
+    />
+
+    <label for="model">Model</label>
+    <input pInputText id="model" [(ngModel)]="newVehicle.model" required />
+  </div>
+
+  <ng-template pTemplate="footer">
+    <button
+      pButton
+      label="Cancel"
+      icon="pi pi-times"
+      class="p-button-text"
+      (click)="closeDialog()"
+    ></button>
+    <button
+      pButton
+      label="Save"
+      icon="pi pi-check"
+      (click)="saveVehicle()"
+      [disabled]="
+        !newVehicle.name || !newVehicle.manufacturer || !newVehicle.model
+      "
+    ></button>
+  </ng-template>
+</p-dialog>
