@@ -1,19 +1,55 @@
-<h2>Vehicle List</h2>
+<h2>Welches Auto möchten Sie fahren?</h2>
 
 <!--Show loading spinner while fetching data -->
-<p-progressSpinner *ngIf="isLoading"></p-progressSpinner>
+<!-- <p-progressSpinner *ngIf="isLoading"></p-progressSpinner> -->
 
 <!--Show vehicle list once data is loaded -->
-<div *ngIf="!isLoading">
+<div *ngIf="!isLoading && !errorMessage">
   <button (click)="toggleSortOrder()">
     Sort {{ sortOrder === "asc" ? "Z-A" : "A-Z" }}
   </button>
+</div>
 
-  <ul>
-    <li *ngFor="let vehicle of vehicles">
-      {{ vehicle.name }} - {{ vehicle.manufacturer }} ({{ vehicle.model }})
-    </li>
-  </ul>
+<!--Skeleton Loader Before Data Loads -->
+<div class="vehicle-list" *ngIf="isLoading">
+  <div class="vehicle-card-container" *ngFor="let _ of [1, 2, 3, 4]">
+    <p-card class="vehicle-card">
+      <ng-template pTemplate="header">
+        <p-skeleton width="100%" height="60px" borderRadius="8px"></p-skeleton>
+      </ng-template>
+
+      <div class="vehicle-info">
+        <p-skeleton width="80%" height="20px"></p-skeleton>
+        <p-skeleton width="60%" height="20px"></p-skeleton>
+        <p-skeleton width="70%" height="20px"></p-skeleton>
+      </div>
+
+      <ng-template pTemplate="footer">
+        <p-skeleton width="120px" height="40px" borderRadius="4px"></p-skeleton>
+      </ng-template>
+    </p-card>
+  </div>
+</div>
+
+<!-- ✅ Show Error Message If Data Fetch Fails -->
+<div class="error-container" *ngIf="errorMessage && isError">
+  <p-message severity="error" [text]="errorMessage"></p-message>
+  <button pButton label="Retry" icon="pi pi-refresh" class="retry-button" (click)="loadVehicles()"></button>
+</div>
+
+<!-- ✅ Show No Vehicles Message -->
+<div class="error-container" *ngIf="!isLoading && vehicles.length === 0 && !errorMessage">
+  <p-message severity="info" text="🚗 No vehicles available at the moment."></p-message>
+</div>
+
+<div class="vehicle-list" *ngIf="vehicles.length > 0">
+  <app-vehicle-card
+    *ngFor="let vehicle of vehicles"
+    [name]="vehicle.name"
+    [manufacturer]="vehicle.manufacturer"
+    [model]="vehicle.model"
+    [mileage]="vehicle.mileage">
+  </app-vehicle-card>
 </div>
 
 <!-- PrimeNG Dialog for Adding a Vehicle -->

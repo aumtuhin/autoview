@@ -1,0 +1,53 @@
+.vehicle-card {
+  width: 100%;
+  max-width: 360px;
+  border-radius: 8px;
+  overflow: hidden;
+  margin: 10px auto;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.12);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+  &:hover {
+    transform: scale(1.02);
+    box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.18);
+  }
+
+  .vehicle-header {
+    background: linear-gradient(135deg, #f39a2e 0%, #e6821f 100%);
+    color: white;
+    text-align: center;
+    padding: 12px;
+    font-weight: bold;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+  }
+
+  .vehicle-name {
+    font-size: 1.2rem;
+    text-transform: capitalize;
+    color: var(--highlight-text-color)
+  }
+
+  .vehicle-info {
+    padding: 15px;
+    font-size: 1rem;
+    color: var(--highlight-text-color);
+
+    p {
+      margin: 6px 0;
+    }
+  }
+
+  .p-card-footer {
+    display: flex;
+    justify-content: center;
+    padding: 12px;
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .vehicle-card {
+    max-width: 100%;
+  }
+}

@@ -8,6 +8,7 @@ import { NgFor, NgIf } from '@angular/common';
 
 // components
 import { AddVehicleComponent } from '../../components';
+import { VehicleCardComponent } from '../../components';
 
 //primeng
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
@@ -15,17 +16,24 @@ import { FormsModule } from '@angular/forms';
 import { DialogModule } from 'primeng/dialog';
 import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
+import { CardModule } from 'primeng/card';
+import { SkeletonModule } from 'primeng/skeleton';
+import { MessageModule } from 'primeng/message';
 
 @Component({
   selector: 'app-vehicle-list',
   imports: [
-    NgFor,
     NgIf,
+    NgFor,
     ProgressSpinnerModule,
     FormsModule,
     DialogModule,
     InputTextModule,
     ButtonModule,
+    VehicleCardComponent,
+    CardModule,
+    SkeletonModule,
+    MessageModule,
   ],
   templateUrl: './vehicle-list.component.html',
   styleUrl: './vehicle-list.component.scss',
@@ -37,6 +45,8 @@ export class VehicleListComponent {
   sortOrder: string = 'asc'; // Default: Sort A-Z
 
   isLoading: boolean = true; //Add loading state
+  errorMessage: string = ''; //Add error message state
+  isError: boolean = false; //Add error state
 
   displayDialog: boolean = false; //Controls dialog visibility
 
@@ -50,14 +60,21 @@ export class VehicleListComponent {
   };
 
   ngOnInit(): void {
+    this.loadVehicles();
+  }
+
+  loadVehicles(): void {
     this.vehicleService.getVehicles().subscribe({
       next: (data) => {
         this.vehicles = data;
         this.sortVehicles();
         this.isLoading = false;
+        this.isError = false;
       },
       error: (error) => {
         console.error('Error fetching vehicles:', error);
+        this.errorMessage = 'Failed to load vehicles. Please try again later.';
+        this.isError = true;
         this.isLoading = false;
       },
       complete: () => {
@@ -81,14 +98,10 @@ export class VehicleListComponent {
 
   openDialog(): void {
     this.displayDialog = true;
-
-    console.log(this.displayDialog)
   }
 
   closeDialog(): void {
-    console.log(this.displayDialog)
     this.displayDialog = false;
-    console.log(this.displayDialog)
     this.newVehicle = {
       name: '',
       manufacturer: '',
