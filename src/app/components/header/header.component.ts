@@ -7,6 +7,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { CommonModule } from '@angular/common';
 import { ImageModule } from 'primeng/image';
 import { ButtonComponent } from '../button/button.component';
+import { VehicleDialogService } from '../../services/vehicle-dialog.service';
 
 @Component({
   standalone: true,
@@ -25,9 +26,10 @@ import { ButtonComponent } from '../button/button.component';
 })
 export class HeaderComponent implements OnInit {
   ngOnInit() {}
-  @Output() addVehicleClicked = new EventEmitter<void>();
 
-  openDialog() {
-    this.addVehicleClicked.emit(); // Notify parent component to open the dialog
+  constructor(private vehicleDialogService: VehicleDialogService) {}
+
+  openDialog(): void {
+    this.vehicleDialogService.openDialog();
   }
 }

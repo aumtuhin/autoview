@@ -4,6 +4,7 @@ import { provideRouter } from '@angular/router';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { ApiModule } from './api/api.module';
 import { Configuration } from './api/configuration';
+import { MessageService } from 'primeng/api';
 
 //primeng
 import { providePrimeNG } from 'primeng/config';
@@ -35,6 +36,7 @@ export const appConfig: ApplicationConfig = {
   providers: [
     provideHttpClient(withFetch()), // Required for HTTP requests
     importProvidersFrom(ApiModule), // Import the API module
+    MessageService, // Provide the PrimeNG MessageService
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
     { provide: Configuration, useValue: new Configuration({ basePath: 'https://67b85e2b699a8a7baef3cceb.mockapi.io' }) }, // Provide the API base URL

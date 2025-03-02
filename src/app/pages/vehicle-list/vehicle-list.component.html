@@ -1,8 +1,5 @@
 <h2>Welches Auto möchten Sie fahren?</h2>
 
-<!--Show loading spinner while fetching data -->
-<!-- <p-progressSpinner *ngIf="isLoading"></p-progressSpinner> -->
-
 <!--Show vehicle list once data is loaded -->
 <div *ngIf="!isLoading && !errorMessage">
   <button (click)="toggleSortOrder()">
@@ -52,45 +49,29 @@
   </app-vehicle-card>
 </div>
 
-<!-- PrimeNG Dialog for Adding a Vehicle -->
-<p-dialog
-  [(visible)]="displayDialog"
-  header="Add Vehicle"
-  [modal]="true"
-  [closable]="false"
->
-  <div class="p-fluid">
-    <label for="name">Name</label>
-    <input pInputText id="name" [(ngModel)]="newVehicle.name" required />
+<!-- Show Add Vehicle Dialog with Larger Width -->
+<p-dialog [(visible)]="displayDialog" [modal]="true" [closable]="false" [style]="{ width: '500px' }">
+  <div class="dialog-content">
 
-    <label for="manufacturer">Manufacturer</label>
-    <input
-      pInputText
-      id="manufacturer"
-      [(ngModel)]="newVehicle.manufacturer"
-      required
-    />
+    <h2 class="dialog-header">Add New Vehicle</h2>
+    <label for="name">Vehicle Name:</label>
+    <small class="error-label" *ngIf="errors.name">{{ errors.name }}</small>
+    <input id="name" type="text" pInputText [(ngModel)]="newVehicle.name" required />
 
-    <label for="model">Model</label>
-    <input pInputText id="model" [(ngModel)]="newVehicle.model" required />
+    <label for="manufacturer">Manufacturer:</label>
+    <small class="error-label" *ngIf="errors.manufacturer">{{ errors.manufacturer }}</small>
+    <input id="manufacturer" type="text" pInputText [(ngModel)]="newVehicle.manufacturer" required />
+
+    <label for="model">Model:</label>
+    <small class="error-label" *ngIf="errors.model">{{ errors.model }}</small>
+    <input id="model" type="text" pInputText [(ngModel)]="newVehicle.model" required />
+
+    <label for="mileage">Mileage:</label>
+    <input id="mileage" type="number" pInputText [(ngModel)]="newVehicle.mileage" required />
   </div>
 
   <ng-template pTemplate="footer">
-    <button
-      pButton
-      label="Cancel"
-      icon="pi pi-times"
-      class="p-button-text"
-      (click)="closeDialog()"
-    ></button>
-    <button
-      pButton
-      label="Save"
-      icon="pi pi-check"
-      (click)="saveVehicle()"
-      [disabled]="
-        !newVehicle.name || !newVehicle.manufacturer || !newVehicle.model
-      "
-    ></button>
+    <button pButton label="Cancel" class="p-button-text" (click)="closeDialog()"></button>
+    <button pButton label="Save" class="p-button-primary" (click)="addVehicle()"></button>
   </ng-template>
 </p-dialog>
