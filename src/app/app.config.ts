@@ -6,7 +6,8 @@ import { ApiModule } from './api/api.module';
 import { Configuration } from './api/configuration';
 import { MessageService } from 'primeng/api';
 
-import { environment } from '../environments/environment.dev'
+//configs;
+import { environment } from '../environments/environment.dev';
 
 //primeng
 import { providePrimeNG } from 'primeng/config';

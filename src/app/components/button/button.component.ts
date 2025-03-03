@@ -8,7 +8,10 @@ import { ButtonModule } from 'primeng/button';
   styleUrl: './button.component.scss'
 })
 export class ButtonComponent {
-  @Input() label: string | undefined;
+  @Input() label!: string;
+  @Input() icon?: string;
+  @Input() class?: string;
+
   @Output() onClick = new EventEmitter<void>(); // Emit event when clicked
 
   handleClick(): void {

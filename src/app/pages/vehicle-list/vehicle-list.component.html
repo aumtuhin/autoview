@@ -1,10 +1,12 @@
-<h2>Welches Auto möchten Sie fahren?</h2>
-
-<!--Show vehicle list once data is loaded -->
-<div *ngIf="!isLoading && !errorMessage">
-  <button (click)="toggleSortOrder()">
-    Sort {{ sortOrder === "asc" ? "Z-A" : "A-Z" }}
-  </button>
+<div class="vehicle-list-header-container">
+  <h2>Welches Auto möchten Sie fahren?</h2>
+  <p-select
+    [options]="sortOptions"
+    [(ngModel)]="sortOrder"
+    optionLabel="label"
+    (onChange)="sortVehicles()"
+    class="w-full md:w-56"
+  />
 </div>
 
 <!--Skeleton Loader Before Data Loads -->
@@ -28,15 +30,27 @@
   </div>
 </div>
 
-<!-- ✅ Show Error Message If Data Fetch Fails -->
+<!-- Show Error Message If Data Fetch Fails -->
 <div class="error-container" *ngIf="errorMessage && isError">
   <p-message severity="error" [text]="errorMessage"></p-message>
-  <button pButton label="Retry" icon="pi pi-refresh" class="retry-button" (click)="loadVehicles()"></button>
+  <button
+    pButton
+    label="Retry"
+    icon="pi pi-refresh"
+    class="retry-button"
+    (click)="loadVehicles()"
+  ></button>
 </div>
 
-<!-- ✅ Show No Vehicles Message -->
-<div class="error-container" *ngIf="!isLoading && vehicles.length === 0 && !errorMessage">
-  <p-message severity="info" text="🚗 No vehicles available at the moment."></p-message>
+<!-- Show No Vehicles Message -->
+<div
+  class="error-container"
+  *ngIf="!isLoading && vehicles.length === 0 && !errorMessage"
+>
+  <p-message
+    severity="info"
+    text="🚗 No vehicles available at the moment."
+  ></p-message>
 </div>
 
 <div class="vehicle-list" *ngIf="vehicles.length > 0">
@@ -46,33 +60,114 @@
     [name]="vehicle.name"
     [manufacturer]="vehicle.manufacturer"
     [model]="vehicle.model"
-    [mileage]="vehicle.mileage">
+    [mileage]="vehicle.mileage"
+  >
   </app-vehicle-card>
 </div>
 
 <!-- Show Add Vehicle Dialog with Larger Width -->
-<p-dialog [(visible)]="displayDialog" [modal]="true" [closable]="false" [style]="{ width: '500px' }">
+<p-dialog
+  [(visible)]="displayDialog"
+  header="Add New Vehicle"
+  [modal]="true"
+  [closable]="false"
+  [style]="{ width: '500px' }"
+>
   <div class="dialog-content">
-
-    <h2 class="dialog-header">Add New Vehicle</h2>
     <label for="name">Vehicle Name:</label>
-    <small class="error-label" *ngIf="errors.name">{{ errors.name }}</small>
-    <input id="name" type="text" pInputText [(ngModel)]="newVehicle.name" required />
+    <small class="p-error" *ngIf="errors.name">{{ errors.name }}</small>
+    <input
+      id="name"
+      type="text"
+      pInputText
+      [(ngModel)]="newVehicle.name"
+      (ngModelChange)="validateField('name', $event)"
+      required
+    />
 
     <label for="manufacturer">Manufacturer:</label>
-    <small class="error-label" *ngIf="errors.manufacturer">{{ errors.manufacturer }}</small>
-    <input id="manufacturer" type="text" pInputText [(ngModel)]="newVehicle.manufacturer" required />
+    <small class="p-error" *ngIf="errors.manufacturer">{{
+      errors.manufacturer
+    }}</small>
+    <input
+      id="manufacturer"
+      type="text"
+      pInputText
+      [(ngModel)]="newVehicle.manufacturer"
+      (ngModelChange)="validateField('manufacturer', $event)"
+      required
+    />
 
     <label for="model">Model:</label>
-    <small class="error-label" *ngIf="errors.model">{{ errors.model }}</small>
-    <input id="model" type="text" pInputText [(ngModel)]="newVehicle.model" required />
+    <small class="p-error" *ngIf="errors.model">{{ errors.model }}</small>
+    <input
+      id="model"
+      type="text"
+      pInputText
+      [(ngModel)]="newVehicle.model"
+      (ngModelChange)="validateField('model', $event)"
+      required
+    />
 
-    <label for="mileage">Mileage:</label>
-    <input id="mileage" type="number" pInputText [(ngModel)]="newVehicle.mileage" required />
+    <label for="fuel">Fuel Type:</label>
+    <small class="p-error" *ngIf="errors.fuel">{{ errors.fuel }}</small>
+    <input
+      id="fuel"
+      type="text"
+      pInputText
+      [(ngModel)]="newVehicle.fuel"
+      (ngModelChange)="validateField('fuel', $event)"
+      required
+    />
+
+    <label for="type">Vehicle Type:</label>
+    <small class="p-error" *ngIf="errors.type">{{ errors.type }}</small>
+    <input
+      id="type"
+      type="text"
+      pInputText
+      [(ngModel)]="newVehicle.type"
+      (ngModelChange)="validateField('type', $event)"
+      required
+    />
+
+    <label for="vin">VIN (Vehicle Identification Number):</label>
+    <small class="p-error" *ngIf="errors.vin">{{ errors.vin }}</small>
+    <input
+      id="vin"
+      type="text"
+      pInputText
+      [(ngModel)]="newVehicle.vin"
+      (ngModelChange)="validateField('vin', $event)"
+      required
+    />
+
+    <label for="color">Color:</label>
+    <input id="color" type="text" pInputText [(ngModel)]="newVehicle.color" />
+
+    <label for="mileage">Mileage (km):</label>
+    <input
+      id="mileage"
+      type="number"
+      pInputText
+      [(ngModel)]="newVehicle.mileage"
+    />
   </div>
 
   <ng-template pTemplate="footer">
-    <button pButton label="Cancel" class="p-button-text" (click)="closeDialog()"></button>
-    <button pButton label="Save" class="p-button-primary" (click)="addVehicle()"></button>
+    <button
+      pButton
+      label="Cancel"
+      class="p-button-text"
+      (click)="closeDialog()"
+    ></button>
+    <button
+      pButton
+      label="Save"
+      class="p-button-primary"
+      (click)="addVehicle()"
+    ></button>
   </ng-template>
 </p-dialog>
+
+<p-toast />

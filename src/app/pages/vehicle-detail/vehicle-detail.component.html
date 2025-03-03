@@ -1,19 +1,55 @@
-<p *ngIf="isLoading">Loading vehicle details...</p>
+<p *ngIf="isLoading" class="loading-text">Loading vehicle details...</p>
 
-<p *ngIf="isError" class="p-error">Failed to load vehicle details. Please try again later.</p>
+<!--Show Error Message if API Fails -->
+<div class="error-container" *ngIf="isError">
+  <p class="error-message">{{ errorMessage }}</p>
+  <button
+    pButton
+    label="Retry"
+    icon="pi pi-refresh"
+    class="p-button-warning"
+    (click)="retry()"
+  ></button>
+  <button
+    pButton
+    label="Back to List"
+    icon="pi pi-arrow-left"
+    class="p-button-secondary"
+    (click)="goBack()"
+  ></button>
+</div>
 
-<p-card *ngIf="vehicle">
-  <ng-template pTemplate="header">
-    <h2 class="vehicle-header">{{ vehicle.name }}</h2>
-  </ng-template>
+<!-- Show Vehicle Details -->
+<div class="vehicle-details-container" *ngIf="vehicle && !isError">
+  <p-card class="vehicle-details-card">
+    <ng-template pTemplate="header">
+      <div class="vehicle-header">
+        <h2 class="vehicle-name">{{ vehicle.name }}</h2>
+      </div>
+    </ng-template>
 
-  <div class="vehicle-info">
-    <p><strong>Manufacturer:</strong> {{ vehicle.manufacturer }}</p>
-    <p><strong>Model:</strong> {{ vehicle.model }}</p>
-    <p *ngIf="vehicle.mileage"><strong>Mileage:</strong> {{ vehicle.mileage }} km</p>
-  </div>
+    <div class="vehicle-info">
+      <p><strong>Manufacturer:</strong> {{ vehicle.manufacturer }}</p>
+      <p><strong>Model:</strong> {{ vehicle.model }}</p>
+      <p *ngIf="vehicle.mileage">
+        <strong>Mileage:</strong> {{ vehicle.mileage }} km
+      </p>
+      <p *ngIf="vehicle.fuel"><strong>Fuel Type:</strong> {{ vehicle.fuel }}</p>
+      <p *ngIf="vehicle.type">
+        <strong>Vehicle Type:</strong> {{ vehicle.type }}
+      </p>
+      <p *ngIf="vehicle.vin"><strong>VIN:</strong> {{ vehicle.vin }}</p>
+    </div>
 
-  <ng-template pTemplate="footer">
-    <button pButton label="Back to List" class="p-button-secondary" (click)="goBack()"></button>
-  </ng-template>
-</p-card>
+    <ng-template pTemplate="footer">
+      <div class="footer-buttons">
+        <button
+          pButton
+          label="Back to List"
+          class="p-button-secondary"
+          (click)="goBack()"
+        ></button>
+      </div>
+    </ng-template>
+  </p-card>
+</div>

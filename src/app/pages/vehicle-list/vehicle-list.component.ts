@@ -23,6 +23,8 @@ import { CardModule } from 'primeng/card';
 import { SkeletonModule } from 'primeng/skeleton';
 import { MessageModule } from 'primeng/message';
 import { MessageService } from 'primeng/api';
+import { Toast } from 'primeng/toast';
+import { Select } from 'primeng/select';
 
 @Component({
   selector: 'app-vehicle-list',
@@ -39,6 +41,8 @@ import { MessageService } from 'primeng/api';
     SkeletonModule,
     MessageModule,
     FormsModule,
+    Select,
+    Toast,
   ],
   templateUrl: './vehicle-list.component.html',
   styleUrl: './vehicle-list.component.scss',
@@ -51,23 +55,17 @@ export class VehicleListComponent {
   @Input() addVehicleClicked!: () => void; // Accepting the function as an Input
 
   vehicles: GetVehicles200ResponseInner[] = [];
-  sortOrder: string = 'asc'; // Default: Sort A-Z
 
-  isLoading: boolean = true; //Add loading state
-  errorMessage: string = ''; //Add error message state
-  isError: boolean = false; //Add error state
+  sortOrder = { label: 'A-Z', value: 'asc' }; // Default: Sort A-Z
+  sortOptions = [this.sortOrder, { label: 'Z-A', value: 'desc' }];
+
+  isLoading: boolean = true;
+  errorMessage: string = '';
+  isError: boolean = false;
 
   displayDialog: boolean = false; //Controls dialog visibility
 
   formValid: boolean = true; // Form validation state
-
-  // ✅ Store validation error messages
-  errors: {
-    name?: string;
-    manufacturer?: string;
-    model?: string;
-    mileage?: string;
-  } = {};
 
   newVehicle: AddVehicleRequest = {
     name: '',
@@ -76,7 +74,11 @@ export class VehicleListComponent {
     fuel: '',
     type: '',
     vin: '',
+    color: null,
+    mileage: null,
   };
+
+  errors: Partial<Record<keyof AddVehicleRequest, string>> = {};
 
   ngOnInit(): void {
     this.loadVehicles();
@@ -85,6 +87,15 @@ export class VehicleListComponent {
       this.displayDialog = state;
     });
   }
+
+  showSuccess() {
+    this.messageService.add({
+      severity: 'success',
+      summary: 'Success',
+      detail: 'Vehicle added successfully!',
+    });
+  }
+
 
   loadVehicles(): void {
     this.vehicleService.getVehicles().subscribe({
@@ -108,15 +119,12 @@ export class VehicleListComponent {
 
   sortVehicles(): void {
     this.vehicles.sort((a, b) => {
-      return this.sortOrder === 'asc'
-        ? (a.name ?? '').localeCompare(b.name ?? '') // A-Z
-        : (b.name ?? '').localeCompare(a.name ?? ''); // Z-A
-    });
-  }
+      if (!a.name || !b.name) return 0;
 
-  toggleSortOrder(): void {
-    this.sortOrder = this.sortOrder === 'asc' ? 'desc' : 'asc';
-    this.sortVehicles();
+      return this.sortOrder.value === 'asc'
+        ? a.name.localeCompare(b.name)
+        : b.name.localeCompare(a.name);
+    });
   }
 
   closeDialog(): void {
@@ -128,43 +136,60 @@ export class VehicleListComponent {
       fuel: '',
       type: '',
       vin: '',
+      color: null,
+      mileage: null,
     };
+    this.errors = {}; // Reset errors when closing
+    this.vehicleDialogService.closeDialog();
   }
 
-  // Validate input fields
+  // Validate a single field dynamically
+  validateField(field: keyof AddVehicleRequest, value: any) {
+    if (!value) {
+      this.errors[field] = `${
+        field.charAt(0).toUpperCase() + field.slice(1)
+      } is required`;
+    } else {
+      delete this.errors[field]; // Remove error when field is valid
+    }
+  }
+
+  // Validate entire form before submission
   validateForm(): boolean {
-    this.errors = {}; // ✅ Reset errors before validation
+    this.errors = {}; // Reset errors before validation
 
-    if (!this.newVehicle.name) {
-      this.errors.name = 'Vehicle name is required';
-    }
-
-    if (!this.newVehicle.manufacturer) {
-      this.errors.manufacturer = 'Manufacturer is required';
-    }
-
-    if (!this.newVehicle.model) {
-      this.errors.model = 'Model is required';
-    }
+    this.validateField('name', this.newVehicle.name);
+    this.validateField('manufacturer', this.newVehicle.manufacturer);
+    this.validateField('model', this.newVehicle.model);
+    this.validateField('fuel', this.newVehicle.fuel);
+    this.validateField('type', this.newVehicle.type);
+    this.validateField('vin', this.newVehicle.vin);
 
     return Object.keys(this.errors).length === 0; // ✅ Returns true if no errors
   }
 
-
   // Add new vehicle
   addVehicle(): void {
-    if (!this.validateForm()) return; // ✅ Stop submission if form is invalid
+    if (!this.validateForm()) return; // Stop submission if form is invalid
 
     this.vehicleService.addVehicle(this.newVehicle).subscribe({
       next: () => {
         this.loadVehicles();
-        this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Vehicle added successfully!' });
-        this.closeDialog();
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Success',
+          detail: 'Vehicle added successfully!',
+        });
+
+        this.closeDialog(); // Close modal AFTER success message
       },
       error: () => {
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Failed to add vehicle. Try again.' });
-      }
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'Failed to add vehicle. Try again.',
+        });
+      },
     });
   }
-
 }

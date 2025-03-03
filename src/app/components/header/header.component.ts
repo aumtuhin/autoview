@@ -1,5 +1,6 @@
-import { Component, OnInit, EventEmitter, Output } from '@angular/core';
-import { MenuItem } from 'primeng/api';
+import { Component, OnInit } from '@angular/core';
+import { Router, NavigationEnd } from '@angular/router';
+
 import { Menubar } from 'primeng/menubar';
 import { BadgeModule } from 'primeng/badge';
 import { AvatarModule } from 'primeng/avatar';
@@ -25,11 +26,30 @@ import { VehicleDialogService } from '../../services/vehicle-dialog.service';
   ],
 })
 export class HeaderComponent implements OnInit {
-  ngOnInit() {}
+  constructor(
+    private vehicleDialogService: VehicleDialogService,
+    private router: Router
+  ) {}
 
-  constructor(private vehicleDialogService: VehicleDialogService) {}
+  showAddVehicleButton = false;
+
+  ngOnInit(): void {
+    this.updateButtonVisibility();
+
+    this.router.events.subscribe((event) => {
+      if (event instanceof NavigationEnd) {
+        this.showAddVehicleButton = event.url == '/' || event.url == '/vehicles';
+      }
+    });
+
+  }
 
   openDialog(): void {
     this.vehicleDialogService.openDialog();
+  }
+
+  updateButtonVisibility(): void {
+    const currentUrl = this.router.url;
+    this.showAddVehicleButton = currentUrl == '/' || currentUrl == '/vehicles';
   }
 }

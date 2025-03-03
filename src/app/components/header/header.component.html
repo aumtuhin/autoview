@@ -2,17 +2,20 @@
   <ng-template #start>
     <a href="/">
       <p-image
-        src="../../../assets/images/dkv-logo.webp"
+        src="assets/images/dkv-logo.webp"
         alt="Logo"
         width="60"
+        loading="lazy"
+        height="auto"
       />
     </a>
   </ng-template>
-  <ng-template>
-  </ng-template>
+  <ng-template> </ng-template>
   <ng-template #end>
     <app-button
-      label="Add A New Vehicle"
+      *ngIf="showAddVehicleButton"
+      label="Add New Vehicle"
+      icon="pi pi-plus"
       (click)="openDialog()"
     ></app-button>
   </ng-template>
