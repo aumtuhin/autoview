@@ -1,5 +1,15 @@
 <p *ngIf="isLoading" class="loading-text">Loading vehicle details...</p>
 
+<div class="back-to-list-buttons">
+  <button
+    pButton
+    label="Back to List"
+    class="p-button-secondary"
+    icon="pi pi-arrow-left"
+    (click)="goBack()"
+  ></button>
+</div>
+
 <!--Show Error Message if API Fails -->
 <div class="error-container" *ngIf="isError">
   <p class="error-message">{{ errorMessage }}</p>
@@ -40,16 +50,5 @@
       </p>
       <p *ngIf="vehicle.vin"><strong>VIN:</strong> {{ vehicle.vin }}</p>
     </div>
-
-    <ng-template pTemplate="footer">
-      <div class="footer-buttons">
-        <button
-          pButton
-          label="Back to List"
-          class="p-button-secondary"
-          (click)="goBack()"
-        ></button>
-      </div>
-    </ng-template>
   </p-card>
 </div>
