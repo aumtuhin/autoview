@@ -6,7 +6,7 @@ import { BehaviorSubject } from 'rxjs';
 })
 export class VehicleDialogService {
   private dialogState = new BehaviorSubject<boolean>(false);
-  dialogState$ = this.dialogState.asObservable(); // ✅ Observable for modal state
+  dialogState$ = this.dialogState.asObservable(); // Observable for modal state
 
   openDialog() {
     this.dialogState.next(true);
