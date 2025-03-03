@@ -4,6 +4,15 @@
   padding: 10px 20px;
   align-items: center;
 }
+.select-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.sort-label {
+  font-size: 1rem;
+  font-weight:  bold;
+}
 .vehicle-card-container {
   display: flex;
   justify-content: center;

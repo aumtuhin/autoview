@@ -1,12 +1,15 @@
 <div class="vehicle-list-header-container">
   <h2>Welches Auto möchten Sie fahren?</h2>
-  <p-select
+  <div class="select-container" >
+    <p class="sort-label" >Sort:</p>
+    <p-select
     [options]="sortOptions"
     [(ngModel)]="sortOrder"
     optionLabel="label"
     (onChange)="sortVehicles()"
     class="w-full md:w-56"
   />
+  </div>
 </div>
 
 <!--Skeleton Loader Before Data Loads -->
