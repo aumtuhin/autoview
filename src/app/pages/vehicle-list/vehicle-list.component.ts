@@ -164,7 +164,7 @@ export class VehicleListComponent {
     this.validateField('type', this.newVehicle.type);
     this.validateField('vin', this.newVehicle.vin);
 
-    return Object.keys(this.errors).length === 0; // ✅ Returns true if no errors
+    return Object.keys(this.errors).length === 0; // Returns true if no errors
   }
 
   // Add new vehicle
