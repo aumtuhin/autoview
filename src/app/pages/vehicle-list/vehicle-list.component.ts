@@ -10,7 +10,6 @@ import {
 import { VehicleDialogService } from '../../services/vehicle-dialog.service';
 
 // components
-import { AddVehicleComponent } from '../../components';
 import { VehicleCardComponent } from '../../components';
 
 //primeng

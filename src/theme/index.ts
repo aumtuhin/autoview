@@ -1,6 +1,11 @@
 import Aura from '@primeng/themes/aura';
 import { definePreset } from '@primeng/themes';
 
+
+// this config does not cover all the design tokens used in the app
+// it is just an example to show how to define a custom preset
+// you can add more tokens as needed
+
 export const MyPreset = definePreset(Aura, {
   semantic: {
       primary: {
