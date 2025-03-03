@@ -1,3 +1,6 @@
+.vehicle-link {
+  text-decoration: none;
+}
 .vehicle-card {
   width: 100%;
   max-width: 360px;
@@ -9,7 +12,7 @@
 
   &:hover {
     transform: scale(1.02);
-    box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.18);
+    box-shadow: 0px 6px 15px rgba(56, 49, 49, 0.18);
   }
 
   .vehicle-header {

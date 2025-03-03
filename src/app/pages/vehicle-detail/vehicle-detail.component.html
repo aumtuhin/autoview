@@ -1,1 +1,19 @@
-<p>vehicle-detail works!</p>
+<p *ngIf="isLoading">Loading vehicle details...</p>
+
+<p *ngIf="isError" class="p-error">Failed to load vehicle details. Please try again later.</p>
+
+<p-card *ngIf="vehicle">
+  <ng-template pTemplate="header">
+    <h2 class="vehicle-header">{{ vehicle.name }}</h2>
+  </ng-template>
+
+  <div class="vehicle-info">
+    <p><strong>Manufacturer:</strong> {{ vehicle.manufacturer }}</p>
+    <p><strong>Model:</strong> {{ vehicle.model }}</p>
+    <p *ngIf="vehicle.mileage"><strong>Mileage:</strong> {{ vehicle.mileage }} km</p>
+  </div>
+
+  <ng-template pTemplate="footer">
+    <button pButton label="Back to List" class="p-button-secondary" (click)="goBack()"></button>
+  </ng-template>
+</p-card>

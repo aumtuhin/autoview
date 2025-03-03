@@ -42,6 +42,7 @@
 <div class="vehicle-list" *ngIf="vehicles.length > 0">
   <app-vehicle-card
     *ngFor="let vehicle of vehicles"
+    [id]="vehicle.id"
     [name]="vehicle.name"
     [manufacturer]="vehicle.manufacturer"
     [model]="vehicle.model"
